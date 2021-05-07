@@ -1,6 +1,19 @@
 .chart {
   border-radius: 16px;
 
+  &.success {
+    border: 2px solid #ff000066;
+    box-shadow: 0px 0px 9px 2px #ff000066;
+  }
+
+  .success-text {
+    position: absolute;
+    right: 24px;
+    top: 12px;
+    font-size: 24px;
+    color: red;
+  }
+
   h2 {
     text-align: left;
     font-size: 20px;

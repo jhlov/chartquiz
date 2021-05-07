@@ -24,6 +24,28 @@ const Chart = ({ isAnswerCheck, chartData, onClickAnswer }: ChartProps) => {
     onClickAnswer(answer);
   };
 
+  /**
+   * 정답을 맞췄는지 여부
+   */
+  const isSuccess: boolean = useMemo(() => {
+    if (isAnswerCheck) {
+      if (rSelected === 1) {
+        // up
+        return (
+          chartData.close[chartData.close.length - 1] <=
+          chartData.add_close[chartData.add_close.length - 1]
+        );
+      } else {
+        return (
+          chartData.add_close[chartData.add_close.length - 1] <=
+          chartData.close[chartData.close.length - 1]
+        );
+      }
+    }
+
+    return false;
+  }, [isAnswerCheck, chartData]);
+
   const options: Highcharts.Options = useMemo<Highcharts.Options>(() => {
     return {
       chart: {
@@ -73,7 +95,8 @@ const Chart = ({ isAnswerCheck, chartData, onClickAnswer }: ChartProps) => {
   }, [isAnswerCheck, chartData]);
 
   return (
-    <Card className="mb-5 chart">
+    <Card className={classNames("mb-5 chart", { success: isSuccess })}>
+      {isSuccess && <span className="success-text">정답!!</span>}
       {isAnswerCheck && <h2 className="mt-3 mb-0 ml-4">{chartData.name}</h2>}
       {isAnswerCheck && (
         <h3 className="ml-4">

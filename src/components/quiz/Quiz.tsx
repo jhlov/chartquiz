@@ -3,6 +3,7 @@ import Chart from "components/chart/Chart";
 import ChartData from "interfaces/ChartData";
 import React, { useEffect, useMemo, useState } from "react";
 import { Button } from "reactstrap";
+import "./Quiz.scss";
 
 const Quiz = () => {
   const QUIZ_COUNT = 3;
@@ -72,9 +73,35 @@ const Quiz = () => {
     onScrollToTop();
   };
 
+  const score = useMemo(() => {
+    return (
+      answerList.filter((e, index) => {
+        const chartData = chartDataList[index];
+        if (chartData) {
+          if (e === 1) {
+            // up
+            return (
+              chartData.close[chartData.close.length - 1] <=
+              chartData.add_close[chartData.add_close.length - 1]
+            );
+          } else {
+            // down
+            return (
+              chartData.add_close[chartData.add_close.length - 1] <=
+              chartData.close[chartData.close.length - 1]
+            );
+          }
+        }
+
+        return false;
+      }).length * 10
+    );
+  }, [answerList]);
+
   return (
-    <div>
+    <div className="quiz">
       <h1 className="mt-5 mb-4">차트속에 답이 있다!?</h1>
+      {isAnswerCheck && <p className="score">SCORE: {score}</p>}
       {chartDataList.map((e, index) => (
         <Chart
           key={index}
