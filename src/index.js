@@ -1,9 +1,15 @@
 import "bootstrap/dist/css/bootstrap.min.css";
 import App from "components/app/App";
+import Highcharts from "highcharts";
 import React from "react";
 import ReactDOM from "react-dom";
 import "./index.css";
 import reportWebVitals from "./reportWebVitals";
+
+Highcharts.setOptions({
+  lang: { thousandsSep: "," },
+  credits: { enabled: false }
+});
 
 ReactDOM.render(
   <React.StrictMode>
