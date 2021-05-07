@@ -13,7 +13,15 @@ interface ChartProps {
 }
 
 const Chart = ({ isAnswerCheck, chartData, onClickAnswer }: ChartProps) => {
+  const [periodSelected, setPeriodSelected] = useState<number>(0);
   const [rSelected, setRSelected] = useState<number | null>(null);
+
+  const periodList: [number, string][] = [
+    [0, "1년"],
+    [6, "6개월"],
+    [9, "3개월"],
+    [11, "1개월"]
+  ];
 
   useEffect(() => {
     //console.log(chartData);
@@ -46,6 +54,10 @@ const Chart = ({ isAnswerCheck, chartData, onClickAnswer }: ChartProps) => {
     return false;
   }, [isAnswerCheck, chartData]);
 
+  const chartStartIndex: number = useMemo(() => {
+    return (chartData.date.length / 12) * periodSelected;
+  }, [periodSelected]);
+
   const options: Highcharts.Options = useMemo<Highcharts.Options>(() => {
     return {
       chart: {
@@ -62,14 +74,17 @@ const Chart = ({ isAnswerCheck, chartData, onClickAnswer }: ChartProps) => {
         crosshairs: isAnswerCheck
       },
       xAxis: {
-        categories: [...chartData.date, ...chartData.add_date],
+        categories: [
+          ...chartData.date.slice(chartStartIndex),
+          ...chartData.add_date
+        ],
         labels: {
           enabled: isAnswerCheck
         },
         plotLines: [
           {
             color: "red",
-            value: chartData.date.length,
+            value: chartData.date.length - chartStartIndex,
             dashStyle: "Dash"
           }
         ]
@@ -86,13 +101,26 @@ const Chart = ({ isAnswerCheck, chartData, onClickAnswer }: ChartProps) => {
         {
           type: "line",
           name: "종가",
+          marker: {
+            enabled: false
+          },
           data: isAnswerCheck
-            ? [...chartData.close, ...chartData.add_close]
-            : [...chartData?.close, null, null, null, null, null]
+            ? [
+                ...chartData.close.slice(chartStartIndex),
+                ...chartData.add_close
+              ]
+            : [
+                ...chartData.close.slice(chartStartIndex),
+                null,
+                null,
+                null,
+                null,
+                null
+              ]
         }
       ]
     };
-  }, [isAnswerCheck, chartData]);
+  }, [isAnswerCheck, chartData, chartStartIndex]);
 
   return (
     <Card className={classNames("mb-5 chart", { success: isSuccess })}>
@@ -105,9 +133,21 @@ const Chart = ({ isAnswerCheck, chartData, onClickAnswer }: ChartProps) => {
       )}
 
       <div className="p-3">
+        <ButtonGroup className="period-btn" size="sm">
+          {periodList.map((e: [number, string]) => (
+            <Button
+              outline
+              color="info"
+              onClick={() => setPeriodSelected(e[0])}
+              active={periodSelected === e[0]}
+            >
+              {e[1]}
+            </Button>
+          ))}
+        </ButtonGroup>
         <HighchartsReact highcharts={Highcharts} options={options} />
       </div>
-      <ButtonGroup>
+      <ButtonGroup className="answer-btn">
         <Button
           outline
           color="primary"
