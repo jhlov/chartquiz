@@ -1,3 +1,4 @@
+import classNames from "classnames";
 import Highcharts from "highcharts";
 import HighchartsReact from "highcharts-react-official";
 import ChartData from "interfaces/ChartData";
@@ -6,12 +7,12 @@ import { Button, ButtonGroup, Card } from "reactstrap";
 import "./Chart.scss";
 
 interface ChartProps {
-  isHidden: boolean;
+  isAnswerCheck: boolean;
   chartData: ChartData;
   onClickAnswer: Function;
 }
 
-const Chart = ({ isHidden, chartData, onClickAnswer }: ChartProps) => {
+const Chart = ({ isAnswerCheck, chartData, onClickAnswer }: ChartProps) => {
   const [rSelected, setRSelected] = useState<number | null>(null);
 
   useEffect(() => {
@@ -34,10 +35,14 @@ const Chart = ({ isHidden, chartData, onClickAnswer }: ChartProps) => {
       legend: {
         enabled: false
       },
+      tooltip: {
+        enabled: isAnswerCheck,
+        crosshairs: isAnswerCheck
+      },
       xAxis: {
         categories: [...chartData.date, ...chartData.add_date],
         labels: {
-          enabled: !isHidden
+          enabled: isAnswerCheck
         },
         plotLines: [
           {
@@ -52,21 +57,30 @@ const Chart = ({ isHidden, chartData, onClickAnswer }: ChartProps) => {
           text: null
         },
         labels: {
-          enabled: !isHidden
+          enabled: isAnswerCheck
         }
       },
       series: [
         {
           type: "line",
           name: "종가",
-          data: [...chartData?.close, null, null, null, null, null]
+          data: isAnswerCheck
+            ? [...chartData.close, ...chartData.add_close]
+            : [...chartData?.close, null, null, null, null, null]
         }
       ]
     };
-  }, [isHidden, chartData]);
+  }, [isAnswerCheck, chartData]);
 
   return (
     <Card className="mb-5 chart">
+      {isAnswerCheck && <h2 className="mt-3 mb-0 ml-4">{chartData.name}</h2>}
+      {isAnswerCheck && (
+        <h3 className="ml-4">
+          {chartData.start_date} ~ {chartData.end_date}
+        </h3>
+      )}
+
       <div className="p-3">
         <HighchartsReact highcharts={Highcharts} options={options} />
       </div>
@@ -76,6 +90,7 @@ const Chart = ({ isHidden, chartData, onClickAnswer }: ChartProps) => {
           color="primary"
           onClick={() => _onClickAnswer(1)}
           active={rSelected === 1}
+          className={classNames({ "pointer-events-none": isAnswerCheck })}
         >
           UP
         </Button>
@@ -84,6 +99,7 @@ const Chart = ({ isHidden, chartData, onClickAnswer }: ChartProps) => {
           color="primary"
           onClick={() => _onClickAnswer(2)}
           active={rSelected === 2}
+          className={classNames({ "pointer-events-none": isAnswerCheck })}
         >
           DOWN
         </Button>

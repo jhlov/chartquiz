@@ -7,7 +7,7 @@ import { Button } from "reactstrap";
 const Quiz = () => {
   const QUIZ_COUNT = 3;
 
-  const [isHidden, setIsHidden] = useState<boolean>(true);
+  const [isAnswerCheck, setIsAnswerCheck] = useState<boolean>(false);
   const [chartDataList, setChartDataList] = useState<ChartData[]>([]);
   const [answerList, setAnswerList] = useState<number[]>(
     Array(QUIZ_COUNT).fill(0)
@@ -27,6 +27,14 @@ const Quiz = () => {
     onScrollToBottom();
   };
 
+  const onScrollToTop = () => {
+    window.scrollTo({
+      left: 0,
+      top: 0,
+      behavior: "smooth"
+    });
+  };
+
   const onScrollToBottom = () => {
     window.scrollTo({
       left: 0,
@@ -35,12 +43,7 @@ const Quiz = () => {
     });
   };
 
-  //const title = "차트속에 답이 있다!?";
-  const title = "title";
-
   const onClickAnswer = (index: number, answer: number) => {
-    console.log(index, answer);
-
     const oldValue = answerList[index];
 
     const newArr = [...answerList];
@@ -65,15 +68,17 @@ const Quiz = () => {
 
   const onClickAnswerCheck = () => {
     console.log("onClickAnswerCheck");
+    setIsAnswerCheck(true);
+    onScrollToTop();
   };
 
   return (
     <div>
-      <h1 className="mt-5 mb-4">{title}</h1>
+      <h1 className="mt-5 mb-4">차트속에 답이 있다!?</h1>
       {chartDataList.map((e, index) => (
         <Chart
           key={index}
-          isHidden={isHidden}
+          isAnswerCheck={isAnswerCheck}
           chartData={e}
           onClickAnswer={(answer: number) => onClickAnswer(index, answer)}
         ></Chart>
