@@ -6,9 +6,11 @@ import { Button } from "reactstrap";
 import "./Quiz.scss";
 
 const Quiz = () => {
-  const QUIZ_COUNT = 3;
+  const QUIZ_COUNT = 5;
 
+  // 정답확인 버튼을 눌렀는지
   const [isAnswerCheck, setIsAnswerCheck] = useState<boolean>(false);
+
   const [chartDataList, setChartDataList] = useState<ChartData[]>([]);
   const [answerList, setAnswerList] = useState<number[]>(
     Array(QUIZ_COUNT).fill(0)
@@ -94,7 +96,8 @@ const Quiz = () => {
         }
 
         return false;
-      }).length * 10
+      }).length *
+      (100 / QUIZ_COUNT)
     );
   }, [answerList]);
 
@@ -110,9 +113,14 @@ const Quiz = () => {
           onClickAnswer={(answer: number) => onClickAnswer(index, answer)}
         ></Chart>
       ))}
-      {isFinish && (
+      {isFinish && !isAnswerCheck && (
         <Button className="mb-5" onClick={onClickAnswerCheck}>
           정답 확인
+        </Button>
+      )}
+      {isFinish && isAnswerCheck && (
+        <Button className="mb-5" onClick={() => window.location.reload()}>
+          다시 하기
         </Button>
       )}
     </div>
