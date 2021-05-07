@@ -1,0 +1,19 @@
+.chart {
+  border-radius: 16px;
+
+  .btn-group {
+    .btn {
+      flex: 1;
+
+      &:first-child {
+        border-bottom-left-radius: 16px;
+        border-top-left-radius: 0;
+      }
+
+      &:last-child {
+        border-bottom-right-radius: 16px;
+        border-top-right-radius: 0;
+      }
+    }
+  }
+}

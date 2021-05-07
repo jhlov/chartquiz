@@ -3,19 +3,25 @@ import HighchartsReact from "highcharts-react-official";
 import ChartData from "interfaces/ChartData";
 import React, { useEffect, useMemo, useState } from "react";
 import { Button, ButtonGroup, Card } from "reactstrap";
+import "./Chart.scss";
 
 interface ChartProps {
-  index: number;
   isHidden: boolean;
   chartData: ChartData;
+  onClickAnswer: Function;
 }
 
-const Chart = ({ index, isHidden, chartData }: ChartProps) => {
+const Chart = ({ isHidden, chartData, onClickAnswer }: ChartProps) => {
   const [rSelected, setRSelected] = useState<number | null>(null);
 
   useEffect(() => {
     //console.log(chartData);
   }, []);
+
+  const _onClickAnswer = (answer: number) => {
+    setRSelected(answer);
+    onClickAnswer(answer);
+  };
 
   const options: Highcharts.Options = useMemo<Highcharts.Options>(() => {
     return {
@@ -30,7 +36,16 @@ const Chart = ({ index, isHidden, chartData }: ChartProps) => {
       },
       xAxis: {
         categories: [...chartData.date, ...chartData.add_date],
-        visible: !isHidden
+        labels: {
+          enabled: !isHidden
+        },
+        plotLines: [
+          {
+            color: "red",
+            value: chartData.date.length,
+            dashStyle: "Dash"
+          }
+        ]
       },
       yAxis: {
         title: {
@@ -51,13 +66,15 @@ const Chart = ({ index, isHidden, chartData }: ChartProps) => {
   }, [isHidden, chartData]);
 
   return (
-    <Card>
-      <HighchartsReact highcharts={Highcharts} options={options} />
+    <Card className="mb-5 chart">
+      <div className="p-3">
+        <HighchartsReact highcharts={Highcharts} options={options} />
+      </div>
       <ButtonGroup>
         <Button
           outline
           color="primary"
-          onClick={() => setRSelected(1)}
+          onClick={() => _onClickAnswer(1)}
           active={rSelected === 1}
         >
           UP
@@ -65,7 +82,7 @@ const Chart = ({ index, isHidden, chartData }: ChartProps) => {
         <Button
           outline
           color="primary"
-          onClick={() => setRSelected(2)}
+          onClick={() => _onClickAnswer(2)}
           active={rSelected === 2}
         >
           DOWN
