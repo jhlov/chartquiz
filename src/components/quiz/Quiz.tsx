@@ -119,6 +119,11 @@ const Quiz = () => {
 
   return (
     <div className="quiz my-4">
+      <p>
+        1년간의 차트를 분석해서 일주일 후의 가격을 예측해보세요
+        <br />
+        (대상: KOSPI 상위종목, 기간: 최근 3년중 랜덤)
+      </p>
       {chartDataList.length === 0 && <p>loading...</p>}
       {isAnswerCheck && <p className="score">SCORE: {score}</p>}
       {chartDataList.map((e, index) => (
