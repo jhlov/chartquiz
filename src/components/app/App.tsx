@@ -1,3 +1,4 @@
+import Header from "components/header/Header";
 import history from "components/history/History";
 import Quiz from "components/quiz/Quiz";
 import { HashRouter, Redirect, Route } from "react-router-dom";
@@ -7,6 +8,7 @@ function App() {
   return (
     <div className="App">
       <div className="container">
+        <Header />
         <HashRouter>
           <Route path="/" exact>
             <Redirect to="/quiz" />

@@ -104,6 +104,7 @@ const Chart = ({ isAnswerCheck, chartData, onClickAnswer }: ChartProps) => {
           marker: {
             enabled: false
           },
+          lineWidth: 1.3,
           data: isAnswerCheck
             ? [
                 ...chartData.close.slice(chartStartIndex),
@@ -136,6 +137,7 @@ const Chart = ({ isAnswerCheck, chartData, onClickAnswer }: ChartProps) => {
         <ButtonGroup className="period-btn" size="sm">
           {periodList.map((e: [number, string]) => (
             <Button
+              key={e[0]}
               outline
               color="info"
               onClick={() => setPeriodSelected(e[0])}

@@ -1,6 +1,8 @@
 import axios from "axios";
 import Chart from "components/chart/Chart";
 import ChartData from "interfaces/ChartData";
+import HistoryData from "interfaces/HistoryData";
+import moment from "moment";
 import React, { useEffect, useMemo, useState } from "react";
 import { Button } from "reactstrap";
 import "./Quiz.scss";
@@ -72,6 +74,7 @@ const Quiz = () => {
   const onClickAnswerCheck = () => {
     console.log("onClickAnswerCheck");
     setIsAnswerCheck(true);
+    saveHistory();
     onScrollToTop();
   };
 
@@ -101,9 +104,22 @@ const Quiz = () => {
     );
   }, [answerList]);
 
+  const saveHistory = () => {
+    let history: HistoryData[] = localStorage.getItem("history")
+      ? JSON.parse(localStorage.getItem("history") as string)
+      : [];
+
+    history.unshift({
+      date: moment().format("YYYY-MM-DD HH:mm:ss"),
+      score: score
+    });
+
+    localStorage.setItem("history", JSON.stringify(history));
+  };
+
   return (
-    <div className="quiz">
-      <h1 className="mt-5 mb-4">차트속에 답이 있다!?</h1>
+    <div className="quiz my-4">
+      {chartDataList.length === 0 && <p>loading...</p>}
       {isAnswerCheck && <p className="score">SCORE: {score}</p>}
       {chartDataList.map((e, index) => (
         <Chart
@@ -119,9 +135,7 @@ const Quiz = () => {
         </Button>
       )}
       {isFinish && isAnswerCheck && (
-        <Button className="mb-5" onClick={() => window.location.reload()}>
-          다시 하기
-        </Button>
+        <Button onClick={() => window.location.reload()}>다시 하기</Button>
       )}
     </div>
   );
