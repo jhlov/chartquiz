@@ -26,7 +26,7 @@ const History = () => {
   }, [history]);
 
   const initHistory = () => {
-    if (window.confirm("정말 초기화 하시겠습니가?")) {
+    if (window.confirm("정말 초기화하시겠습니까?")) {
       localStorage.removeItem("history");
       setHistory([]);
     }
