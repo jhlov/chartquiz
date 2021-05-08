@@ -47,7 +47,7 @@ const History = () => {
           {history.map((e: { date: string; score: number }, index: number) => (
             <tr key={index}>
               <th>{index + 1}</th>
-              <td>{e.date.substr(0, 10)}</td>
+              <td>{e.date}</td>
               <td>{e.score}</td>
             </tr>
           ))}
