@@ -22,10 +22,20 @@ const Header = () => {
         <Collapse isOpen={isOpen} navbar>
           <Nav className="mr-auto" navbar>
             <NavItem>
-              <NavLink href="/chartquiz/#/quiz">퀴즈풀기</NavLink>
+              <NavLink
+                href="/chartquiz/#/quiz"
+                onClick={() => setIsOpen(false)}
+              >
+                퀴즈풀기
+              </NavLink>
             </NavItem>
             <NavItem>
-              <NavLink href="/chartquiz/#/history">기록보기</NavLink>
+              <NavLink
+                href="/chartquiz/#/history"
+                onClick={() => setIsOpen(false)}
+              >
+                기록보기
+              </NavLink>
             </NavItem>
           </Nav>
         </Collapse>
