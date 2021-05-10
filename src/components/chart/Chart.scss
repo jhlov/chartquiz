@@ -4,6 +4,12 @@
   -moz-animation: fadeIn 1s ease-out;
   -o-animation: fadeIn 1s ease-out;
   animation: fadeIn 1s ease-out;
+  transition: all 0.125s ease-in 0s;
+
+  &:hover {
+    transform: translateY(-3px);
+    box-shadow: rgba(67, 67, 67, 0.08) 0px 1.125rem 1.125rem;
+  }
 
   &.success {
     border: 2px solid #ff000066;
