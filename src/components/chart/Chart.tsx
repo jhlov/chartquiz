@@ -101,10 +101,13 @@ const Chart = ({ isAnswerCheck, chartData, onClickAnswer }: ChartProps) => {
         {
           type: "line",
           name: "종가",
-          marker: {
-            enabled: false
-          },
           lineWidth: 1.3,
+          states: {
+            hover: {
+              enabled: isAnswerCheck,
+              lineWidth: 1.3
+            }
+          },
           data: isAnswerCheck
             ? [
                 ...chartData.close.slice(chartStartIndex),
