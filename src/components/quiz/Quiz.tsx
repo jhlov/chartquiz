@@ -20,6 +20,7 @@ const Quiz = () => {
 
   // mounted
   useEffect(() => {
+    console.log('mounted');
     fetchData();
   }, []);
 
@@ -102,7 +103,7 @@ const Quiz = () => {
       }).length *
       (100 / QUIZ_COUNT)
     );
-  }, [answerList]);
+  }, [chartDataList, answerList]);
 
   const saveHistory = () => {
     let history: HistoryData[] = localStorage.getItem("history")
@@ -125,7 +126,9 @@ const Quiz = () => {
         (대상: KOSPI 상위종목, 기간: 최근 3년중 랜덤, 총 {QUIZ_COUNT}문제)
       </p>
       {chartDataList.length === 0 && <p>loading...</p>}
+
       {isAnswerCheck && <p className="score">SCORE: {score}</p>}
+
       {chartDataList.map((e, index) => (
         <Chart
           key={index}
@@ -134,11 +137,13 @@ const Quiz = () => {
           onClickAnswer={(answer: number) => onClickAnswer(index, answer)}
         ></Chart>
       ))}
+
       {isFinish && !isAnswerCheck && (
         <Button className="mb-5" onClick={onClickAnswerCheck}>
           정답 확인
         </Button>
       )}
+
       {isFinish && isAnswerCheck && (
         <Button onClick={() => window.location.reload()}>다시 하기</Button>
       )}

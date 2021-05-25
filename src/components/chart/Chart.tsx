@@ -52,11 +52,11 @@ const Chart = ({ isAnswerCheck, chartData, onClickAnswer }: ChartProps) => {
     }
 
     return false;
-  }, [isAnswerCheck, chartData]);
+  }, [isAnswerCheck, chartData, rSelected]);
 
   const chartStartIndex: number = useMemo(() => {
     return (chartData.date.length / 12) * periodSelected;
-  }, [periodSelected]);
+  }, [chartData, periodSelected]);
 
   const options: Highcharts.Options = useMemo<Highcharts.Options>(() => {
     return {
